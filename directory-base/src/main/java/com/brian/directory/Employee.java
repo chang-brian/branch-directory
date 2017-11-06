@@ -55,12 +55,8 @@ public class Employee extends Activity {
         drawableName = first + "_" + String.valueOf(last.charAt(0));
         Log.i("NAME", drawableName);
 
-//        int id = getResources().getIdentifier("com.brian.directory:drawable/" + drawableName, null, null);
-//        image.setImageResource(id);
         int id = getResources().getIdentifier(drawableName, "drawable", getPackageName());
         image.setImageResource(id);
-
-//        image.setImageDrawable(getDrawable(R.drawable.drawableName));
 
 
         name.setText(employee_name);

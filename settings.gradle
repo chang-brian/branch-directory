@@ -1,1 +1,1 @@
-include ':app'
+include ':directory-base', ':directoryapk'

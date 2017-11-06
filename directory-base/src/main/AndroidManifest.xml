@@ -3,6 +3,8 @@
     package="com.brian.directory">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
 
     <application
         android:allowBackup="true"
@@ -26,6 +28,16 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
+
+            <!-- Branch App Links (optional) -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="directory.app.link" />
+                <data android:scheme="https" android:host="directory-alternate.app.link" />
+            </intent-filter>
+
         </activity>
 
         <!-- Branch init -->
@@ -34,7 +46,8 @@
         <meta-data android:name="io.branch.sdk.TestMode" android:value="false" />
 
         <activity android:name=".Employee">
-
+        </activity>
+        <activity android:name=".Error">
         </activity>
 
         <receiver android:name="io.branch.referral.InstallListener" android:exported="true">

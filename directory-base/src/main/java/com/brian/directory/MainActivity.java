@@ -1,6 +1,11 @@
 package com.brian.directory;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,15 +32,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     ArrayAdapter<String> adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         ListView lv = (ListView)findViewById(R.id.listViewEmployees);
         final ArrayList<String> arrayEmployees = new ArrayList<>();
         final ArrayList<String> arrayNames = new ArrayList<>();
-//        final ArrayList<String> arrayTitles = new ArrayList<>();
-//        final ArrayList<String> arrayDesc = new ArrayList<>();
         final Map<String, String[]> myMap = new HashMap<String, String[]>();
         arrayEmployees.addAll(Arrays.asList(getResources().getStringArray(R.array.array_employees)));
         for (String employee: arrayEmployees) {
@@ -66,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("employee_name", name);
                 intent.putExtra("employee_title", title);
                 intent.putExtra("employee_desc", desc);
+
                 startActivity(intent);
             }
 
@@ -97,6 +103,22 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }, this.getIntent().getData(), this);
+
+        Context context = this;
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        if (!isConnected) {
+            try {
+                Uri savedIntent = this.getIntent().getData();
+                Intent intent = new Intent(this, Error.class);
+                intent.putExtra("saved", savedIntent.toString());
+                startActivity(intent);
+            } catch (Exception e) {
+
+            }
+        }
     }
 
     @Override
