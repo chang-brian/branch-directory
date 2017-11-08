@@ -70,6 +70,10 @@ public class Error extends Activity {
             public void onInitFinished(JSONObject referringParams, BranchError error) {
                 if (error == null) {
                     Log.i("BRANCH SDK", referringParams.toString());
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(Error.this, referringParams.toString(), duration);
+                    toast.show();
                 } else {
                     Log.i("BRANCH SDK", error.getMessage());
                 }
