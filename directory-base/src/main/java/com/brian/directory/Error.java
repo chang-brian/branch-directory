@@ -44,8 +44,8 @@ public class Error extends Activity {
                         String uri = intent.getExtras().getString("saved");
                         Log.i("uri", uri);
                         Intent i = new Intent(context, Error.class);
-                        i.putExtra("branch", uri);
                         i.putExtra("branch_force_new_session", true);
+                        i.setData(Uri.parse(uri));
                         finish();
                         startActivity(i);
                     }
