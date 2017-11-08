@@ -47,7 +47,8 @@
 
         <activity android:name=".Employee">
         </activity>
-        <activity android:name=".Error">
+        <activity android:name=".Error"
+            android:launchMode="singleTask">
         </activity>
 
         <receiver android:name="io.branch.referral.InstallListener" android:exported="true">

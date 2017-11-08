@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Branch.enableLogging();
         setContentView(R.layout.activity_main);
 
         ListView lv = (ListView)findViewById(R.id.listViewEmployees);

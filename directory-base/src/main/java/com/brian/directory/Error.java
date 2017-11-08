@@ -7,9 +7,15 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import org.json.JSONObject;
+
+import io.branch.referral.Branch;
+import io.branch.referral.BranchError;
 
 
 /**
@@ -36,12 +42,12 @@ public class Error extends Activity {
                     Intent intent = getIntent();
                     if (intent.hasExtra("saved")) {
                         String uri = intent.getExtras().getString("saved");
-                        Intent override = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                        override.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        override.setPackage("com.android.chrome");
-                        override.putExtra("branch_force_new_session", true);
-                        override.putExtra("branch_used", true);
-                        startActivity(override);
+                        Log.i("uri", uri);
+                        Intent i = new Intent(context, Error.class);
+                        i.putExtra("branch", uri);
+                        i.putExtra("branch_force_new_session", true);
+                        finish();
+                        startActivity(i);
                     }
                 } else {
                     int duration = Toast.LENGTH_SHORT;
@@ -52,5 +58,27 @@ public class Error extends Activity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // Branch init
+        Branch.getInstance(this).initSession(new Branch.BranchReferralInitListener() {
+            @Override
+            public void onInitFinished(JSONObject referringParams, BranchError error) {
+                if (error == null) {
+                    Log.i("BRANCH SDK", referringParams.toString());
+                } else {
+                    Log.i("BRANCH SDK", error.getMessage());
+                }
+            }
+        }, this.getIntent().getData(), this);
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        this.setIntent(intent);
     }
 }
